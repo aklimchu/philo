@@ -6,7 +6,7 @@
 #    By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 11:18:05 by aklimchu          #+#    #+#              #
-#    Updated: 2024/09/17 09:58:18 by aklimchu         ###   ########.fr        #
+#    Updated: 2024/10/16 13:54:30 by aklimchu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,11 +26,15 @@ NAME		= philo
 
 # Compiler
 CC 			= cc
-CFLAGS		= -Wall -Wextra -Werror -lpthread
+CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -f
 
 # Source / OBJ files / Includes
-SRC 		= 
+SRC 		=	main.c \
+				fill_struct.c \
+				threads_tools.c \
+				philo.c \
+				mutex_tools.c
 OBJ 		= $(SRC:.c=.o)
 INCLUDE		= -I "./inc"
 
@@ -41,7 +45,7 @@ all:		$(NAME)
 	$(CC) $(CFLAGS) $(INCLUDE) $^ -c -o $@
 
 $(NAME):	$(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) $(INCLUDE) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) -lpthread $(INCLUDE) -o $(NAME)
 	@echo "$(GREEN)SUCCESS, PHILO IS READY $(DEF_COLOR)"
 
 clean:
