@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:24:38 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/16 14:33:02 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/10/17 14:06:26 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,23 @@ void	fill_struct(int argc, char **argv, t_philo *philo)
 		philo->num_to_eat = ft_atoi(argv[5]);
 	else
 		philo->num_to_eat = -1;
-	philo->eat_count = (int *)malloc(philo->philo_num * sizeof(int));
-	if (philo->eat_count == NULL)
+	philo->philo_count = 0;
+	philo->die_flag = 0;
+	philo->eat_enough_flag = 0;
+	philo->state = (int *)malloc(philo->philo_num * sizeof(int));
+	if (philo->state == NULL)
 	{
 		perror("malloc() failed");
 		exit (1);
 	}
-	memset(philo->eat_count, 0, philo->philo_num * sizeof(int));
+	memset(philo->state, THINKING, philo->philo_num * sizeof(int));
+	philo->eaten_times = (int *)malloc(philo->philo_num * sizeof(int));
+	if (philo->eaten_times == NULL)
+	{
+		perror("malloc() failed");
+		exit (1);
+	}
+	memset(philo->eaten_times, 0, philo->philo_num * sizeof(int));
 }
 
 void	input_error_print()

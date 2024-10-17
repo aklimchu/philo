@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 13:42:32 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/16 14:03:57 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/10/17 10:59:24 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,21 @@ int	init_mutex(t_philo *philo)
 		}
 		i++;
 	}
+	if (pthread_mutex_init(&philo->philo_count_mutex, NULL))
+	{
+		perror("mutex_init() failed");
+		return (1);
+	}
+	if (pthread_mutex_init(&philo->printf_mutex, NULL))
+	{
+		perror("mutex_init() failed");
+		return (1);
+	}
+	if (pthread_mutex_init(&philo->eating_mutex, NULL))
+	{
+		perror("mutex_init() failed");
+		return (1);
+	}
 	return (0);
 }
 
@@ -45,4 +60,7 @@ void destroy_mutex(t_philo *philo)
 		pthread_mutex_destroy(&philo->fork_mutex[i]);
 		i++;
 	}
+	pthread_mutex_destroy(&philo->philo_count_mutex);
+	pthread_mutex_destroy(&philo->printf_mutex);
+	pthread_mutex_destroy(&philo->eating_mutex);
 }
