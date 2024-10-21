@@ -12,13 +12,12 @@
 
 #include "philo.h"
 
-void	check_times_eaten(t_philo *philo);
+void	check_philo(t_philo *philo);
 
 int	create_threads(t_philo *philo)
 {
 	int				i;
 	int				error;
-	struct timeval	tv;
 	
 	philo->tid = (pthread_t *)malloc(philo->philo_num * sizeof(pthread_t));
 	if (philo->tid == NULL)
@@ -27,8 +26,6 @@ int	create_threads(t_philo *philo)
 		exit (1);
 	}
 	i = 0;
-	gettimeofday(&tv, NULL);
-	philo->start_ms = tv.tv_usec / 1000;
 	while (i < philo->philo_num)
 	{
 		error = pthread_create(&(philo->tid[i]), NULL, &philo_funct, philo);
@@ -39,11 +36,7 @@ int	create_threads(t_philo *philo)
 		}
 		i++;
 	}
-	while (philo->num_to_eat != -1 && philo->eat_enough_flag == 0)
-	{
-		check_times_eaten(philo);
-		//usleep(2000);
-	}
+	check_philo(philo);
 	return (0);
 }
 
@@ -59,16 +52,43 @@ void	join_threads(t_philo *philo)
 	}
 }
 
-void	check_times_eaten(t_philo *philo)
+void	check_philo(t_philo *philo)
 {
-	int		i;
+	int				i;
+	int				philo_full;
+	struct timeval	tv;
+	int				timestamp;
 
 	i = 0;
-	while (i < philo->philo_num)
+	philo_full = 0;
+	while (1)
 	{
-		if (philo->eaten_times[i] < philo->num_to_eat)
+		if (philo->num_to_eat != -1 && philo->eaten_times[i] >= philo->num_to_eat)
+			philo_full++;
+		gettimeofday(&tv, NULL);
+		timestamp = tv.tv_sec * 1000 + tv.tv_usec / 1000 - philo->start_time;
+		if (philo->state[i] != EATING && \
+			timestamp - philo->last_meal[i] >= philo->time_to_die)
+		{
+			philo->die_flag = 1;
+			pthread_mutex_lock(&philo->printf_mutex);
+			printf("%d: Philo %d died\n", timestamp, i + 1);
+			pthread_mutex_unlock(&philo->printf_mutex);
 			return ;
-		i++;
+		}
+		if (philo_full == philo->philo_num)
+		{
+			printf("everyone has eaten\n");
+			philo->eat_enough_flag = 1;
+			return ;
+		}
+		else if (i + 1 == philo->philo_num)
+		{
+			i = 0;
+			philo_full = 0;
+		}
+		else
+			i++;
+		usleep(1000);
 	}
-	philo->eat_enough_flag = 1;
 }

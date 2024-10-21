@@ -42,11 +42,6 @@ int	init_mutex(t_philo *philo)
 		perror("mutex_init() failed");
 		return (1);
 	}
-	if (pthread_mutex_init(&philo->eating_mutex, NULL))
-	{
-		perror("mutex_init() failed");
-		return (1);
-	}
 	return (0);
 }
 
@@ -62,5 +57,4 @@ void destroy_mutex(t_philo *philo)
 	}
 	pthread_mutex_destroy(&philo->philo_count_mutex);
 	pthread_mutex_destroy(&philo->printf_mutex);
-	pthread_mutex_destroy(&philo->eating_mutex);
 }

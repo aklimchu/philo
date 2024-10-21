@@ -34,15 +34,15 @@ typedef struct	s_philo
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				num_to_eat;
-	long int		start_ms;
+	long int		start_time;
 	pthread_t		*tid;
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	printf_mutex;
-	pthread_mutex_t	eating_mutex;
 	pthread_mutex_t	philo_count_mutex;
 	int				philo_count;
 	int				*state;
 	int				*eaten_times;
+	long int		*last_meal;
 	int				die_flag;
 	int				eat_enough_flag;
 }				t_philo;

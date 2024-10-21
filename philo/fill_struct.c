@@ -16,6 +16,8 @@ static const char	*white_spaces_and_exit(const char *str);
 
 void	fill_struct(int argc, char **argv, t_philo *philo)
 {
+	struct timeval	tv;
+	
 	philo->philo_num = ft_atoi(argv[1]);
 	philo->time_to_die = ft_atoi(argv[2]);
 	philo->time_to_eat = ft_atoi(argv[3]);
@@ -41,6 +43,15 @@ void	fill_struct(int argc, char **argv, t_philo *philo)
 		exit (1);
 	}
 	memset(philo->eaten_times, 0, philo->philo_num * sizeof(int));
+	philo->last_meal = (long int *)malloc(philo->philo_num * sizeof(long int));
+	if (philo->last_meal == NULL)
+	{
+		perror("malloc() failed");
+		exit (1);
+	}
+	memset(philo->last_meal, 0, philo->philo_num * sizeof(int));
+	gettimeofday(&tv, NULL);
+	philo->start_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
 void	input_error_print()

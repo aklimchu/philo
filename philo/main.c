@@ -50,9 +50,6 @@ static void	check_input(int argc, char **argv)
 		exit(1);
 	}
 	if (ft_atoi(argv[1]) == 0 || (argv[5] && ft_atoi(argv[5]) == 0))
-	{
-		printf("\n");
 		exit(0);
-	}
 }
 
