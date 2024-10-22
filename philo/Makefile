@@ -6,7 +6,7 @@
 #    By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 11:18:05 by aklimchu          #+#    #+#              #
-#    Updated: 2024/10/17 15:41:08 by aklimchu         ###   ########.fr        #
+#    Updated: 2024/10/22 10:28:38 by aklimchu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ SRC 		=	main.c \
 				fill_struct.c \
 				threads_tools.c \
 				philo.c \
-				mutex_tools.c
+				mutex_tools.c \
+				eating.c
 OBJ 		= $(SRC:.c=.o)
 INCLUDE		= -I "./inc"
 

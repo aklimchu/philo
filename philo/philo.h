@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:44:48 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/17 14:22:17 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/10/22 14:54:55 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,23 @@
 #include <stdlib.h> // exit
 #include <string.h> // memset
 #include <unistd.h> // usleep
+#include <stdint.h> // uint64_t
 
 enum state 
 {
-    EATING = 0, // philosopher is EATING
-    SLEEPING = 1, // philosopher is SLEEPING
-	THINKING = 2, // philosopher is THINKING
+	THINKING = 0, // philosopher is THINKING
+    EATING = 1, // philosopher is EATING
+    SLEEPING = 2, // philosopher is SLEEPING
 };
 
 typedef struct	s_philo
 {
 	int				philo_num;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	uint64_t		time_to_die;
+	uint64_t				time_to_eat;
+	uint64_t				time_to_sleep;
 	int				num_to_eat;
-	long int		start_time;
+	uint64_t		start_time;
 	pthread_t		*tid;
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	printf_mutex;
@@ -42,10 +43,18 @@ typedef struct	s_philo
 	int				philo_count;
 	int				*state;
 	int				*eaten_times;
-	long int		*last_meal;
+	uint64_t		*last_meal;
 	int				die_flag;
 	int				eat_enough_flag;
 }				t_philo;
+typedef struct	s_cur
+{
+	int			philo_seat;
+	int			philo_seat_previous;
+	int			philo_seat_next;
+	int			fork_1;
+	int			fork_2;
+}				t_cur;
 
 void input_error_print();
 void fill_struct(int argc, char **argv, t_philo *philo);
@@ -55,6 +64,8 @@ void join_threads(t_philo *philo);
 void *philo_funct(void *data);
 int init_mutex(t_philo *philo);
 void destroy_mutex(t_philo *philo);
-void check_times_eaten(t_philo *philo);
+int eating(t_philo *philo, t_cur cur);
+void check_philo(t_philo *philo);
+void ft_usleep(uint64_t time_to_sleep);
 
 #endif /*PHILO_H*/

@@ -6,22 +6,22 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:24:38 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/17 14:06:26 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/10/22 14:55:04 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+static void	fill_extra(t_philo *philo);
+
 static const char	*white_spaces_and_exit(const char *str);
 
 void	fill_struct(int argc, char **argv, t_philo *philo)
 {
-	struct timeval	tv;
-	
 	philo->philo_num = ft_atoi(argv[1]);
-	philo->time_to_die = ft_atoi(argv[2]);
-	philo->time_to_eat = ft_atoi(argv[3]);
-	philo->time_to_sleep = ft_atoi(argv[4]);
+	philo->time_to_die = (uint64_t)ft_atoi(argv[2]);
+	philo->time_to_eat = (uint64_t)ft_atoi(argv[3]);
+	philo->time_to_sleep = (uint64_t)ft_atoi(argv[4]);
 	if (argc == 6)
 		philo->num_to_eat = ft_atoi(argv[5]);
 	else
@@ -29,13 +29,18 @@ void	fill_struct(int argc, char **argv, t_philo *philo)
 	philo->philo_count = 0;
 	philo->die_flag = 0;
 	philo->eat_enough_flag = 0;
+	fill_extra(philo);
+}
+
+static void	fill_extra(t_philo *philo)
+{
 	philo->state = (int *)malloc(philo->philo_num * sizeof(int));
 	if (philo->state == NULL)
 	{
 		perror("malloc() failed");
 		exit (1);
 	}
-	memset(philo->state, THINKING, philo->philo_num * sizeof(int));
+	memset(philo->state, 0, philo->philo_num * sizeof(int));
 	philo->eaten_times = (int *)malloc(philo->philo_num * sizeof(int));
 	if (philo->eaten_times == NULL)
 	{
@@ -43,15 +48,13 @@ void	fill_struct(int argc, char **argv, t_philo *philo)
 		exit (1);
 	}
 	memset(philo->eaten_times, 0, philo->philo_num * sizeof(int));
-	philo->last_meal = (long int *)malloc(philo->philo_num * sizeof(long int));
+	philo->last_meal = (uint64_t *)malloc(philo->philo_num * sizeof(uint64_t));
 	if (philo->last_meal == NULL)
 	{
 		perror("malloc() failed");
 		exit (1);
 	}
-	memset(philo->last_meal, 0, philo->philo_num * sizeof(int));
-	gettimeofday(&tv, NULL);
-	philo->start_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	memset(philo->last_meal, 0, philo->philo_num * sizeof(uint64_t));	
 }
 
 void	input_error_print()
