@@ -35,7 +35,9 @@ SRC 		=	main.c \
 				threads_tools.c \
 				philo.c \
 				mutex_tools.c \
-				eating.c
+				eating.c \
+				free.c \
+				threads_tools_extra.c
 OBJ 		= $(SRC:.c=.o)
 INCLUDE		= -I "./inc"
 

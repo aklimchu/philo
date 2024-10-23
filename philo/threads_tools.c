@@ -14,8 +14,6 @@
 
 int	create_threads(t_philo *philo)
 {
-	int				i;
-	int				error;
 	struct timeval	tv;
 	
 	gettimeofday(&tv, NULL);
@@ -23,22 +21,15 @@ int	create_threads(t_philo *philo)
 	printf("Start time: %lu\n", philo->start_time);
 	philo->tid = (pthread_t *)malloc(philo->philo_num * sizeof(pthread_t));
 	if (philo->tid == NULL)
+		return(free_and_exit(philo, 1, "malloc() failed"));
+	while (philo->threads_count < philo->philo_num)
 	{
-		perror("malloc() failed");
-		exit (1);
+		if (pthread_create(&(philo->tid[philo->threads_count]), \
+			NULL, &philo_funct, philo))
+			return(free_and_exit(philo, 1, "pthread_create() failed"));
+		philo->threads_count++;
 	}
-	i = 0;
-	while (i < philo->philo_num)
-	{
-		error = pthread_create(&(philo->tid[i]), NULL, &philo_funct, philo);
-		if (error != 0)
-		{
-			printf("\nThread can't be created : [%s]", strerror(error));
-			return (1);
-		}
-		i++;
-	}
-	while (philo->eat_enough_flag == 0 && philo->die_flag == 0)
+	while (check_flags(philo) == 0)
 	{
 		check_philo(philo);
 		ft_usleep(2);
@@ -51,7 +42,7 @@ void	join_threads(t_philo *philo)
 	int		i;
 
 	i = 0;
-	while (i < philo->philo_num)
+	while (i < philo->threads_count)
 	{
 		pthread_join(philo->tid[i], NULL);
 		i++;
@@ -73,7 +64,7 @@ void	check_philo(t_philo *philo)
 			philo_full++;
 		gettimeofday(&tv, NULL);
 		timestamp = (uint64_t)tv.tv_sec * 1000 + tv.tv_usec / 1000 - philo->start_time;
-		if (timestamp - philo->last_meal[i] >= philo->time_to_die)
+		if (timestamp - check_last_meal(philo, i)/* philo->last_meal[i] */ >= philo->time_to_die)
 		{
 			pthread_mutex_lock(&philo->die_mutex);
 			philo->die_flag = 1;

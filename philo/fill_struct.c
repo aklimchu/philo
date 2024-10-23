@@ -12,12 +12,13 @@
 
 #include "philo.h"
 
-static void	fill_extra(t_philo *philo);
+static int	fill_extra(t_philo *philo);
 
 static const char	*white_spaces_and_exit(const char *str);
 
 void	fill_struct(int argc, char **argv, t_philo *philo)
 {
+	memset(philo, 0, sizeof(*philo));
 	philo->philo_num = ft_atoi(argv[1]);
 	philo->time_to_die = (uint64_t)ft_atoi(argv[2]);
 	philo->time_to_eat = (uint64_t)ft_atoi(argv[3]);
@@ -26,35 +27,36 @@ void	fill_struct(int argc, char **argv, t_philo *philo)
 		philo->num_to_eat = ft_atoi(argv[5]);
 	else
 		philo->num_to_eat = -1;
-	philo->philo_count = 0;
+	/* philo->philo_count = 0;
 	philo->die_flag = 0;
 	philo->eat_enough_flag = 0;
+	philo->mutex_count = 0;
+	philo->threads_count = 0;
+	philo->fork_mutex = NULL;
+	philo->state_mutex = NULL;
+	philo->last_meal_mutex = NULL;
+	philo->state = NULL;
+	philo->eaten_times = NULL;
+	philo->last_meal = NULL;
+	philo->tid = NULL; */
 	fill_extra(philo);
 }
 
-static void	fill_extra(t_philo *philo)
+static int	fill_extra(t_philo *philo)
 {
 	philo->state = (int *)malloc(philo->philo_num * sizeof(int));
 	if (philo->state == NULL)
-	{
-		perror("malloc() failed");
-		exit (1);
-	}
+		return(free_and_exit(philo, 1, "malloc() failed"));
 	memset(philo->state, 0, philo->philo_num * sizeof(int));
 	philo->eaten_times = (int *)malloc(philo->philo_num * sizeof(int));
 	if (philo->eaten_times == NULL)
-	{
-		perror("malloc() failed");
-		exit (1);
-	}
+		return(free_and_exit(philo, 1, "malloc() failed"));
 	memset(philo->eaten_times, 0, philo->philo_num * sizeof(int));
 	philo->last_meal = (uint64_t *)malloc(philo->philo_num * sizeof(uint64_t));
 	if (philo->last_meal == NULL)
-	{
-		perror("malloc() failed");
-		exit (1);
-	}
-	memset(philo->last_meal, 0, philo->philo_num * sizeof(uint64_t));	
+		return(free_and_exit(philo, 1, "malloc() failed"));
+	memset(philo->last_meal, 0, philo->philo_num * sizeof(uint64_t));
+	return (0);
 }
 
 void	input_error_print()

@@ -25,9 +25,9 @@ void	*philo_funct(void *data)
 	
 	philo = (t_philo *)data;
 	set_values(philo, &cur);
-	while (philo->die_flag == 0 && philo->eat_enough_flag == 0)
+	while (check_flags(philo) == 0)
 	{
-		if (philo->state[cur.philo_seat_previous - 1] != EATING)
+		if (check_eating(philo, cur.philo_seat_previous - 1) != EATING/* philo->state[cur.philo_seat_previous - 1] != EATING */)
 		{
 			if (eating(philo, cur) == 1)
 				break ;
@@ -64,13 +64,15 @@ static int	sleeping(t_philo *philo, t_cur cur)
 	uint64_t		sleeping_time;
 	
 	sleeping_time = 0;
-	if (philo->die_flag == 0 && philo->eat_enough_flag == 0)
+	if (check_flags(philo) == 0)
 	{
+		pthread_mutex_lock(&philo->state_mutex[cur.philo_seat - 1]);
 		philo->state[cur.philo_seat - 1] = SLEEPING;
+		pthread_mutex_unlock(&philo->state_mutex[cur.philo_seat - 1]);
 	
 		check_philo(philo);
-		if (philo->eat_enough_flag == 1 || philo->die_flag == 1)
-				return (1);
+		if (check_flags(philo) == 1)
+			return (1);
 		gettimeofday(&tv, NULL);
 		timestamp = (uint64_t)tv.tv_sec * 1000 + tv.tv_usec /1000 - philo->start_time;
 
@@ -78,7 +80,7 @@ static int	sleeping(t_philo *philo, t_cur cur)
 		printf("%lu: Philo %d is sleeping\n", timestamp, cur.philo_seat); // sleeping - print
 		pthread_mutex_unlock(&philo->printf_mutex);
 	}
-	while (philo->die_flag == 0 && philo->eat_enough_flag == 0 && sleeping_time < philo->time_to_sleep)
+	while (check_flags(philo) == 0 && sleeping_time < philo->time_to_sleep)
 	{
 		ft_usleep(2); // sleeping - waiting
 		sleeping_time += 2;
@@ -93,11 +95,13 @@ static int	thinking(t_philo *philo, t_cur cur)
 	uint64_t				timestamp;
 	struct timeval	tv;
 
-	if (philo->die_flag == 0 && philo->eat_enough_flag == 0)
+	if (check_flags(philo) == 0)
 	{
+		pthread_mutex_lock(&philo->state_mutex[cur.philo_seat - 1]);
 		philo->state[cur.philo_seat - 1] = THINKING;
+		pthread_mutex_unlock(&philo->state_mutex[cur.philo_seat - 1]);
 		check_philo(philo);
-		if (philo->eat_enough_flag == 1 || philo->die_flag == 1)
+		if (check_flags(philo) == 1)
 			return (1);
 		gettimeofday(&tv, NULL);
 		timestamp = (uint64_t)tv.tv_sec * 1000 + tv.tv_usec / 1000 - philo->start_time;

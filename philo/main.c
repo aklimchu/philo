@@ -20,12 +20,9 @@ int	main(int argc, char **argv)
 	
 	check_input(argc, argv);
 	fill_struct(argc, argv, &philo);
-	if (init_mutex(&philo) == 1)
-		return(/* free_and_exit */ 1);
-	if (create_threads(&philo) == 1)
-		return (/* free_and_exit */ 1);
-	join_threads(&philo);
-	destroy_mutex(&philo);
+	init_mutex(&philo);
+	create_threads(&philo);
+	free_and_exit(&philo, 0, NULL);
 	return (0);
 }
 

@@ -38,10 +38,14 @@ typedef struct	s_philo
 	uint64_t		start_time;
 	pthread_t		*tid;
 	pthread_mutex_t	*fork_mutex;
+	pthread_mutex_t	*state_mutex;
+	pthread_mutex_t	*last_meal_mutex;
 	pthread_mutex_t	printf_mutex;
 	pthread_mutex_t	philo_count_mutex;
 	pthread_mutex_t	die_mutex;
 	pthread_mutex_t	eat_all_mutex;
+	int				mutex_count;
+	int				threads_count;
 	int				philo_count;
 	int				*state;
 	int				*eaten_times;
@@ -67,6 +71,10 @@ int init_mutex(t_philo *philo);
 void destroy_mutex(t_philo *philo);
 int eating(t_philo *philo, t_cur cur);
 void check_philo(t_philo *philo);
+int free_and_exit(t_philo *philo, int exit_code, char *error_message);
 void ft_usleep(uint64_t time_to_sleep);
+int	check_eating(t_philo *philo, int count);
+int check_flags(t_philo *philo);
+int check_last_meal(t_philo *philo, int count);
 
 #endif /*PHILO_H*/

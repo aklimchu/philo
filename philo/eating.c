@@ -40,11 +40,15 @@ static int	lock_first_fork(t_philo *philo, t_cur cur)
 	uint64_t			timestamp;
 	struct		timeval	tv;
 	
-	if (philo->die_flag == 1 || philo->eat_enough_flag == 1)
+	if (check_flags(philo) == 1)
 		return (1);
 	
 	if (philo->philo_num != 1)
+	{
+		pthread_mutex_lock(&philo->state_mutex[cur.philo_seat - 1]);
 		philo->state[cur.philo_seat - 1] = EATING;
+		pthread_mutex_unlock(&philo->state_mutex[cur.philo_seat - 1]);
+	}
 
 	pthread_mutex_lock(&philo->fork_mutex[cur.fork_1 - 1]); // locking the first fork
 
@@ -57,7 +61,7 @@ static int	lock_first_fork(t_philo *philo, t_cur cur)
 
 	if (philo->philo_num == 1)
 	{
-		while (philo->die_flag == 0)
+		while (check_flags(philo) == 0)
 		{
 			ft_usleep(2);
 		}
@@ -76,7 +80,7 @@ static int	lock_second_fork_and_eat(t_philo *philo, t_cur cur)
 
 	check_philo(philo);
 	
-	if (philo->die_flag == 1 || philo->eat_enough_flag == 1)
+	if (check_flags(philo) == 1)
 	{
 		pthread_mutex_unlock(&philo->fork_mutex[cur.fork_1 - 1]); // unlocking the first fork
 		pthread_mutex_unlock(&philo->fork_mutex[cur.fork_2 - 1]); // unlocking the second fork
@@ -86,7 +90,9 @@ static int	lock_second_fork_and_eat(t_philo *philo, t_cur cur)
 	gettimeofday(&tv, NULL);
 	timestamp = (uint64_t)tv.tv_sec * 1000 + tv.tv_usec /1000 - philo->start_time;
 	
-	philo->last_meal[cur.philo_seat - 1] = timestamp; 
+	pthread_mutex_lock(&philo->last_meal_mutex[cur.philo_seat - 1]);
+	philo->last_meal[cur.philo_seat - 1] = timestamp;
+	pthread_mutex_unlock(&philo->last_meal_mutex[cur.philo_seat - 1]);
 
 	pthread_mutex_lock(&philo->printf_mutex);
 	printf("%lu: Philo %d taking the fork number %d\n", timestamp, cur.philo_seat, cur.fork_2); // second fork - print
@@ -94,7 +100,7 @@ static int	lock_second_fork_and_eat(t_philo *philo, t_cur cur)
 	pthread_mutex_unlock(&philo->printf_mutex);
 			
 	eating_time = 0;
-	while (philo->die_flag == 0 && philo->eat_enough_flag == 0 && eating_time < philo->time_to_eat)
+	while (check_flags(philo) == 0 && eating_time < philo->time_to_eat)
 	{
 		ft_usleep(2); // eating - waiting
 		eating_time += 2;
