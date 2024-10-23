@@ -24,7 +24,7 @@ int	eating(t_philo *philo, t_cur cur)
 	if (lock_second_fork_and_eat(philo, cur) == 1)
 		return (1);
 
-	philo->eaten_times[cur.philo_seat - 1]++;
+	philo->eaten_times[cur.philo_seat - 1]++; // or in the begining of the meal?
 
 	pthread_mutex_lock(&philo->printf_mutex);
 	printf("Philosopher %d has eaten %d times\n", cur.philo_seat, philo->eaten_times[cur.philo_seat - 1]);
@@ -74,6 +74,7 @@ static int	lock_second_fork_and_eat(t_philo *philo, t_cur cur)
 	
 	pthread_mutex_lock(&philo->fork_mutex[cur.fork_2 - 1]); // locking the second fork		
 
+	check_philo(philo);
 	
 	if (philo->die_flag == 1 || philo->eat_enough_flag == 1)
 	{
@@ -85,8 +86,8 @@ static int	lock_second_fork_and_eat(t_philo *philo, t_cur cur)
 	gettimeofday(&tv, NULL);
 	timestamp = (uint64_t)tv.tv_sec * 1000 + tv.tv_usec /1000 - philo->start_time;
 	
-	philo->last_meal[cur.philo_seat - 1] = timestamp;
-			
+	philo->last_meal[cur.philo_seat - 1] = timestamp; 
+
 	pthread_mutex_lock(&philo->printf_mutex);
 	printf("%lu: Philo %d taking the fork number %d\n", timestamp, cur.philo_seat, cur.fork_2); // second fork - print
 	printf("%lu: Philo %d is eating\n", timestamp, cur.philo_seat); // eating - print

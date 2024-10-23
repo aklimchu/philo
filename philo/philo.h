@@ -40,6 +40,8 @@ typedef struct	s_philo
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	printf_mutex;
 	pthread_mutex_t	philo_count_mutex;
+	pthread_mutex_t	die_mutex;
+	pthread_mutex_t	eat_all_mutex;
 	int				philo_count;
 	int				*state;
 	int				*eaten_times;
@@ -51,7 +53,6 @@ typedef struct	s_cur
 {
 	int			philo_seat;
 	int			philo_seat_previous;
-	int			philo_seat_next;
 	int			fork_1;
 	int			fork_2;
 }				t_cur;

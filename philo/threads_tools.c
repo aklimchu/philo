@@ -75,7 +75,9 @@ void	check_philo(t_philo *philo)
 		timestamp = (uint64_t)tv.tv_sec * 1000 + tv.tv_usec / 1000 - philo->start_time;
 		if (timestamp - philo->last_meal[i] >= philo->time_to_die)
 		{
+			pthread_mutex_lock(&philo->die_mutex);
 			philo->die_flag = 1;
+			pthread_mutex_unlock(&philo->die_mutex);
 			pthread_mutex_lock(&philo->printf_mutex);
 			printf("%lu: Philo %d died\n", timestamp, i + 1);
 			pthread_mutex_unlock(&philo->printf_mutex);
@@ -84,7 +86,9 @@ void	check_philo(t_philo *philo)
 		if (philo_full == philo->philo_num)
 		{
 			printf("everyone has eaten\n");
+			pthread_mutex_lock(&philo->eat_all_mutex);
 			philo->eat_enough_flag = 1;
+			pthread_mutex_unlock(&philo->eat_all_mutex);
 			return ;
 		}
 		else

@@ -1,0 +1,7 @@
+5 800 200 200 7
+no one should die, simulation should stop after 7 eats
+
+Test: [5 800 200 200] | no one should die
+
+Test: [5 600 150 150] | no one should die
+
