@@ -6,17 +6,15 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:24:38 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/22 14:55:04 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/10/24 10:33:23 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	fill_extra(t_philo *philo);
-
 static const char	*white_spaces_and_exit(const char *str);
 
-void	fill_struct(int argc, char **argv, t_philo *philo)
+int	fill_struct(int argc, char **argv, t_philo *philo)
 {
 	memset(philo, 0, sizeof(*philo));
 	philo->philo_num = ft_atoi(argv[1]);
@@ -27,23 +25,6 @@ void	fill_struct(int argc, char **argv, t_philo *philo)
 		philo->num_to_eat = ft_atoi(argv[5]);
 	else
 		philo->num_to_eat = -1;
-	/* philo->philo_count = 0;
-	philo->die_flag = 0;
-	philo->eat_enough_flag = 0;
-	philo->mutex_count = 0;
-	philo->threads_count = 0;
-	philo->fork_mutex = NULL;
-	philo->state_mutex = NULL;
-	philo->last_meal_mutex = NULL;
-	philo->state = NULL;
-	philo->eaten_times = NULL;
-	philo->last_meal = NULL;
-	philo->tid = NULL; */
-	fill_extra(philo);
-}
-
-static int	fill_extra(t_philo *philo)
-{
 	philo->state = (int *)malloc(philo->philo_num * sizeof(int));
 	if (philo->state == NULL)
 		return(free_and_exit(philo, 1, "malloc() failed"));
@@ -87,7 +68,7 @@ int	ft_atoi(const char *str)
 		if (checkl < 0 && neg == 1)
 			return (-1);
 		if (checkl < 0 && neg == -1)
-			return (0);
+			return (-1);
 		res = res * 10 + (*str - '0');
 		str++;
 	}

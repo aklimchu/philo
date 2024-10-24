@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:44:22 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/16 14:28:46 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/10/24 10:19:59 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,22 @@ int	main(int argc, char **argv)
 
 static void	check_input(int argc, char **argv)
 {
-	int		error;
 	int		i;
 
-	error = 0;
 	if (argc < 5 || argc > 6)
-		error = 1;
+	{
+		input_error_print();
+		exit(1);
+	}
 	i = 1;
 	while (argv[i])
 	{
 		if (ft_atoi(argv[i]) < 0)
-			error = 1;
+		{
+			input_error_print();
+			exit(1);
+		}
 		i++;
-	}
-	if (error == 1)
-	{
-		input_error_print();
-		exit(1);
 	}
 	if (ft_atoi(argv[1]) == 0 || (argv[5] && ft_atoi(argv[5]) == 0))
 		exit(0);

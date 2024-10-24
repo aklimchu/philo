@@ -34,13 +34,22 @@ int check_flags(t_philo *philo)
 		return (0);
 }
 
-int check_last_meal(t_philo *philo, int count)
+uint64_t check_last_meal(t_philo *philo, int count)
 {
-	int	res;
+	uint64_t	res;
 
 	pthread_mutex_lock(&philo->last_meal_mutex[count]);
 	res = philo->last_meal[count];
 	pthread_mutex_unlock(&philo->last_meal_mutex[count]);
 	return(res);
-	/* philo->last_meal[i] */
+}
+
+int check_eaten_times(t_philo *philo, int count)
+{
+	int	res;
+
+	pthread_mutex_lock(&philo->eaten_times_mutex[count]);
+	res = philo->eaten_times[count];
+	pthread_mutex_unlock(&philo->eaten_times_mutex[count]);
+	return(res);
 }

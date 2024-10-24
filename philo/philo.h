@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:44:48 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/22 14:54:55 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:12:25 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ enum state
 	THINKING = 0, // philosopher is THINKING
     EATING = 1, // philosopher is EATING
     SLEEPING = 2, // philosopher is SLEEPING
+	FIRST_FORK = 3 // philosopher has taken the FIRST FORK
 };
 
 typedef struct	s_philo
@@ -40,6 +41,8 @@ typedef struct	s_philo
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	*state_mutex;
 	pthread_mutex_t	*last_meal_mutex;
+	pthread_mutex_t	*eaten_times_mutex;
+	pthread_mutex_t	*eating_mutex;
 	pthread_mutex_t	printf_mutex;
 	pthread_mutex_t	philo_count_mutex;
 	pthread_mutex_t	die_mutex;
@@ -51,18 +54,20 @@ typedef struct	s_philo
 	int				*eaten_times;
 	uint64_t		*last_meal;
 	int				die_flag;
+	int				die_message_printed;
 	int				eat_enough_flag;
 }				t_philo;
 typedef struct	s_cur
 {
 	int			philo_seat;
 	int			philo_seat_previous;
+	int			philo_seat_next;
 	int			fork_1;
 	int			fork_2;
 }				t_cur;
 
 void input_error_print();
-void fill_struct(int argc, char **argv, t_philo *philo);
+int fill_struct(int argc, char **argv, t_philo *philo);
 int ft_atoi(const char *str);
 int create_threads(t_philo *philo);
 void join_threads(t_philo *philo);
@@ -75,6 +80,7 @@ int free_and_exit(t_philo *philo, int exit_code, char *error_message);
 void ft_usleep(uint64_t time_to_sleep);
 int	check_eating(t_philo *philo, int count);
 int check_flags(t_philo *philo);
-int check_last_meal(t_philo *philo, int count);
+uint64_t check_last_meal(t_philo *philo, int count);
+int check_eaten_times(t_philo *philo, int count);
 
 #endif /*PHILO_H*/

@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 13:42:32 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/17 10:59:24 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:23:44 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,28 @@ int	init_mutex(t_philo *philo)
 		i++;
 		philo->mutex_count++;
 	}
+	philo->eaten_times_mutex = (pthread_mutex_t *)malloc(philo->philo_num * sizeof(pthread_mutex_t));
+	if (philo->eaten_times_mutex == NULL)
+		return (free_and_exit(philo, 1, "malloc() failed"));
+	i = 0;
+	while (i < philo->philo_num)
+	{
+		if (pthread_mutex_init(&philo->eaten_times_mutex[i], NULL))
+			return (free_and_exit(philo, 1, "mutex_init() failed"));
+		i++;
+		philo->mutex_count++;
+	}
+	/* philo->eating_mutex = (pthread_mutex_t *)malloc(philo->philo_num * sizeof(pthread_mutex_t));
+	if (philo->eating_mutex == NULL)
+		return (free_and_exit(philo, 1, "malloc() failed"));
+	i = 0;
+	while (i < philo->philo_num)
+	{
+		if (pthread_mutex_init(&philo->eating_mutex[i], NULL))
+			return (free_and_exit(philo, 1, "mutex_init() failed"));
+		i++;
+		philo->mutex_count++;
+	} */
 	if (init_mutex_extra(philo) == 1)
 		return (free_and_exit(philo, 1, "mutex_init() failed"));
 	return (0);
@@ -102,6 +124,20 @@ void	destroy_mutex(t_philo *philo)
 		i++;
 		destroy_count++;
 	}
+	i = 0;
+	while (destroy_count < philo->mutex_count && i < philo->philo_num)
+	{
+		pthread_mutex_destroy(&philo->eaten_times_mutex[i]);
+		i++;
+		destroy_count++;
+	}
+	i = 0;
+/* 	while (destroy_count < philo->mutex_count && i < philo->philo_num)
+	{
+		pthread_mutex_destroy(&philo->eating_mutex[i]);
+		i++;
+		destroy_count++;
+	} */
 	if (destroy_count < philo->mutex_count)
 	{
 		pthread_mutex_destroy(&philo->philo_count_mutex);

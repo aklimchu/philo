@@ -24,6 +24,21 @@ static void	free_memory(t_philo *philo)
 		free(philo->fork_mutex);
 		philo->fork_mutex = NULL;
 	}
+	if (philo->state_mutex)
+	{
+		free(philo->state_mutex);
+		philo->state_mutex = NULL;
+	}
+	if (philo->last_meal_mutex)
+	{
+		free(philo->last_meal_mutex);
+		philo->last_meal_mutex = NULL;
+	}
+	if (philo->eaten_times_mutex)
+	{
+		free(philo->eaten_times_mutex);
+		philo->eaten_times_mutex = NULL;
+	}
 	if (philo->state)
 	{
 		free(philo->state);
