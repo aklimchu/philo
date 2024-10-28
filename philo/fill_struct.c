@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:24:38 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/24 10:33:23 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/10/28 09:14:25 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,22 @@ int	fill_struct(int argc, char **argv, t_philo *philo)
 		philo->num_to_eat = ft_atoi(argv[5]);
 	else
 		philo->num_to_eat = -1;
-	philo->state = (int *)malloc(philo->philo_num * sizeof(int));
-	if (philo->state == NULL)
-		return(free_and_exit(philo, 1, "malloc() failed"));
-	memset(philo->state, 0, philo->philo_num * sizeof(int));
 	philo->eaten_times = (int *)malloc(philo->philo_num * sizeof(int));
 	if (philo->eaten_times == NULL)
-		return(free_and_exit(philo, 1, "malloc() failed"));
+		return (free_and_exit(philo, 1, "malloc() failed"));
 	memset(philo->eaten_times, 0, philo->philo_num * sizeof(int));
 	philo->last_meal = (uint64_t *)malloc(philo->philo_num * sizeof(uint64_t));
 	if (philo->last_meal == NULL)
-		return(free_and_exit(philo, 1, "malloc() failed"));
+		return (free_and_exit(philo, 1, "malloc() failed"));
 	memset(philo->last_meal, 0, philo->philo_num * sizeof(uint64_t));
 	return (0);
 }
 
-void	input_error_print()
+void	input_error_print(void)
 {
 	printf("Correct input format:\n./philo number_of_philosophers time_to_die");
-	printf("time_to_eat time_to_sleep\n[number_of_times_each_philosopher_must_eat].\n");
+	printf("time_to_eat time_to_sleep\n");
+	printf("[number_of_times_each_philosopher_must_eat].\n");
 	printf("Values can't be negative and they have to be numbers.\n");
 }
 
@@ -79,7 +76,7 @@ static const char	*white_spaces_and_exit(const char *str)
 {
 	int		start;
 	int		i;
-	
+
 	start = 0;
 	i = 0;
 	while (str[i] == 32 || (str[i] > 8 && str[i] < 14))

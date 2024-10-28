@@ -1,4 +1,14 @@
-// 42 header
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/28 08:37:44 by aklimchu          #+#    #+#             */
+/*   Updated: 2024/10/28 09:14:35 by aklimchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
 
@@ -10,8 +20,8 @@ int	free_and_exit(t_philo *philo, int exit_code, char *error_message)
 {
 	join_threads(philo);
 	destroy_mutex(philo);
-	free_memory(philo); // last? array of mutexes and threads
-	free_memory_extra(philo); // last? array of mutexes and threads
+	free_memory(philo);
+	free_memory_extra(philo);
 	if (error_message)
 		printf("%s\n", error_message);
 	exit(exit_code);
@@ -24,11 +34,6 @@ static void	free_memory(t_philo *philo)
 		free(philo->fork_mutex);
 		philo->fork_mutex = NULL;
 	}
-	if (philo->state_mutex)
-	{
-		free(philo->state_mutex);
-		philo->state_mutex = NULL;
-	}
 	if (philo->last_meal_mutex)
 	{
 		free(philo->last_meal_mutex);
@@ -38,11 +43,6 @@ static void	free_memory(t_philo *philo)
 	{
 		free(philo->eaten_times_mutex);
 		philo->eaten_times_mutex = NULL;
-	}
-	if (philo->state)
-	{
-		free(philo->state);
-		philo->state = NULL;
 	}
 	if (philo->eaten_times)
 	{

@@ -1,0 +1,7 @@
+5 800 200 200 7
+no one should die, simulation should stop after 7 eats
+
+31 599 200 200 10
+should die
+
+Mutex to prevent philosopher from dyinng and starting eating same time?

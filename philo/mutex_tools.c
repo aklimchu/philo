@@ -6,21 +6,24 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 13:42:32 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/24 15:23:44 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/10/28 09:15:58 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	destroy_mutex_extra(t_philo *philo, int destroy_count);
-
 static int	init_mutex_extra(t_philo *philo);
+
+static int	init_mutex_extra_2(t_philo *philo);
+
+static void	destroy_mutex_extra(t_philo *philo, int destroy_count);
 
 int	init_mutex(t_philo *philo)
 {
 	int		i;
-	
-	philo->fork_mutex = (pthread_mutex_t *)malloc(philo->philo_num * sizeof(pthread_mutex_t));
+
+	philo->fork_mutex = (pthread_mutex_t *)malloc(philo->philo_num * \
+		sizeof(pthread_mutex_t));
 	if (philo->fork_mutex == NULL)
 		return (free_and_exit(philo, 1, "malloc() failed"));
 	i = 0;
@@ -31,20 +34,19 @@ int	init_mutex(t_philo *philo)
 		i++;
 		philo->mutex_count++;
 	}
-	philo->state_mutex = (pthread_mutex_t *)malloc(philo->philo_num * sizeof(pthread_mutex_t));
-	if (philo->state_mutex == NULL)
-		return (free_and_exit(philo, 1, "malloc() failed"));
-	i = 0;
-	while (i < philo->philo_num)
-	{
-		if (pthread_mutex_init(&philo->state_mutex[i], NULL))
-			return (free_and_exit(philo, 1, "mutex_init() failed"));
-		i++;
-		philo->mutex_count++;
-	}
-	philo->last_meal_mutex = (pthread_mutex_t *)malloc(philo->philo_num * sizeof(pthread_mutex_t));
+	philo->last_meal_mutex = (pthread_mutex_t *)malloc(philo->philo_num * \
+		sizeof(pthread_mutex_t));
 	if (philo->last_meal_mutex == NULL)
 		return (free_and_exit(philo, 1, "malloc() failed"));
+	if (init_mutex_extra(philo) == 1)
+		return (free_and_exit(philo, 1, "mutex_init() failed"));
+	return (0);
+}
+
+static int	init_mutex_extra(t_philo *philo)
+{
+	int		i;
+
 	i = 0;
 	while (i < philo->philo_num)
 	{
@@ -53,7 +55,8 @@ int	init_mutex(t_philo *philo)
 		i++;
 		philo->mutex_count++;
 	}
-	philo->eaten_times_mutex = (pthread_mutex_t *)malloc(philo->philo_num * sizeof(pthread_mutex_t));
+	philo->eaten_times_mutex = (pthread_mutex_t *)malloc(philo->philo_num * \
+		sizeof(pthread_mutex_t));
 	if (philo->eaten_times_mutex == NULL)
 		return (free_and_exit(philo, 1, "malloc() failed"));
 	i = 0;
@@ -64,23 +67,12 @@ int	init_mutex(t_philo *philo)
 		i++;
 		philo->mutex_count++;
 	}
-	/* philo->eating_mutex = (pthread_mutex_t *)malloc(philo->philo_num * sizeof(pthread_mutex_t));
-	if (philo->eating_mutex == NULL)
-		return (free_and_exit(philo, 1, "malloc() failed"));
-	i = 0;
-	while (i < philo->philo_num)
-	{
-		if (pthread_mutex_init(&philo->eating_mutex[i], NULL))
-			return (free_and_exit(philo, 1, "mutex_init() failed"));
-		i++;
-		philo->mutex_count++;
-	} */
-	if (init_mutex_extra(philo) == 1)
+	if (init_mutex_extra_2(philo) == 1)
 		return (free_and_exit(philo, 1, "mutex_init() failed"));
 	return (0);
 }
 
-static int	init_mutex_extra(t_philo *philo)
+static int	init_mutex_extra_2(t_philo *philo)
 {
 	if (pthread_mutex_init(&philo->philo_count_mutex, NULL))
 		return (1);
@@ -113,34 +105,8 @@ void	destroy_mutex(t_philo *philo)
 	i = 0;
 	while (destroy_count < philo->mutex_count && i < philo->philo_num)
 	{
-		pthread_mutex_destroy(&philo->state_mutex[i]);
-		i++;
-		destroy_count++;
-	}
-	i = 0;
-	while (destroy_count < philo->mutex_count && i < philo->philo_num)
-	{
 		pthread_mutex_destroy(&philo->last_meal_mutex[i]);
 		i++;
-		destroy_count++;
-	}
-	i = 0;
-	while (destroy_count < philo->mutex_count && i < philo->philo_num)
-	{
-		pthread_mutex_destroy(&philo->eaten_times_mutex[i]);
-		i++;
-		destroy_count++;
-	}
-	i = 0;
-/* 	while (destroy_count < philo->mutex_count && i < philo->philo_num)
-	{
-		pthread_mutex_destroy(&philo->eating_mutex[i]);
-		i++;
-		destroy_count++;
-	} */
-	if (destroy_count < philo->mutex_count)
-	{
-		pthread_mutex_destroy(&philo->philo_count_mutex);
 		destroy_count++;
 	}
 	if (destroy_count < philo->mutex_count)
@@ -153,6 +119,20 @@ void	destroy_mutex(t_philo *philo)
 
 static void	destroy_mutex_extra(t_philo *philo, int destroy_count)
 {
+	int		i;
+
+	i = 0;
+	while (destroy_count < philo->mutex_count && i < philo->philo_num)
+	{
+		pthread_mutex_destroy(&philo->eaten_times_mutex[i]);
+		i++;
+		destroy_count++;
+	}
+	if (destroy_count < philo->mutex_count)
+	{
+		pthread_mutex_destroy(&philo->philo_count_mutex);
+		destroy_count++;
+	}
 	if (destroy_count < philo->mutex_count)
 	{
 		pthread_mutex_destroy(&philo->die_mutex);
