@@ -6,36 +6,37 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 12:26:25 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/28 09:40:31 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:38:31 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static void	set_values(t_philo *philo, t_cur *cur);
-
 static int	sleeping(t_philo *philo, t_cur cur);
-
 static int	thinking(t_philo *philo, t_cur cur);
+static void	philo_processes(t_philo *philo, t_cur cur);
 
 void	*philo_funct(void *data)
 {
-	t_philo	*philo;
-	t_cur	cur;
+	t_philo		*philo;
+	t_cur		cur;
+	uint64_t	thinking_time;
 
 	philo = (t_philo *)data;
 	set_values(philo, &cur);
+	thinking(philo, cur);
+	thinking_time = 0;
 	if (cur.philo_seat % 2 == 0 || cur.philo_seat == philo->philo_num)
-		ft_usleep(philo->time_to_eat / 2);
-	while (check_flags(philo) == 0)
 	{
-		if (eating(philo, cur) == 1)
-			break ;
-		if (sleeping(philo, cur) == 1)
-			break ;
-		if (thinking(philo, cur) == 1)
-			break ;
+		while (check_flags(philo) == 0 && \
+			thinking_time < philo->time_to_eat / 2)
+		{
+			ft_usleep(5);
+			thinking_time += 5;
+		}
 	}
+	philo_processes(philo, cur);
 	return (NULL);
 }
 
@@ -97,4 +98,17 @@ static int	thinking(t_philo *philo, t_cur cur)
 		pthread_mutex_unlock(&philo->printf_mutex);
 	}
 	return (0);
+}
+
+static void	philo_processes(t_philo *philo, t_cur cur)
+{
+	while (check_flags(philo) == 0)
+	{
+		if (eating(philo, cur) == 1)
+			break ;
+		if (sleeping(philo, cur) == 1)
+			break ;
+		if (thinking(philo, cur) == 1)
+			break ;
+	}
 }

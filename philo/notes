@@ -1,0 +1,24 @@
+
+31 599 200 200 10 - should die
+131 596 200 200 10 - should die
+
+31 601 200 200 10 - shouldn't die
+
+31 600 200 200 10 - should die
+
+131 596 200 200 10
+199 610 200 100 10 - shouldn't die
+
+50 405 200 200 10 - shouldn't die
+
+50 401 200 200 10 - shouldn't die 
+
+130 410 200 100 10 - shouldn't die 
+
+130 410 200 200 10 - shouldn't die 
+
+198 405 200 200 10
+
+...
+
+helgrind - lock order violation?

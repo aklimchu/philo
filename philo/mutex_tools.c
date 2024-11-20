@@ -6,16 +6,14 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 13:42:32 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/28 09:15:58 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:34:56 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static int	init_mutex_extra(t_philo *philo);
-
 static int	init_mutex_extra_2(t_philo *philo);
-
 static void	destroy_mutex_extra(t_philo *philo, int destroy_count);
 
 int	init_mutex(t_philo *philo)

@@ -6,14 +6,13 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 12:22:19 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/28 09:40:10 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:34:31 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static void	die_print(t_philo *philo, int i);
-
 static void	eat_enough_print(t_philo *philo);
 
 int	create_threads(t_philo *philo)

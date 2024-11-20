@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:44:48 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/28 09:35:03 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:53:21 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h> // memset
 # include <unistd.h> // usleep
 # include <stdint.h> // uint64_t
+# include <limits.h> // for overflow check
 
 typedef struct s_philo
 {

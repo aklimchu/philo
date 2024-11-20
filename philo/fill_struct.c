@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:24:38 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/28 09:14:25 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:22:21 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	fill_struct(int argc, char **argv, t_philo *philo)
 
 void	input_error_print(void)
 {
-	printf("Correct input format:\n./philo number_of_philosophers time_to_die");
+	printf("Correct input format:\n./philo number_of_philosophers time_to_die ");
 	printf("time_to_eat time_to_sleep\n");
 	printf("[number_of_times_each_philosopher_must_eat].\n");
 	printf("Values can't be negative and they have to be numbers.\n");
