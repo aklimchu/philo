@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:44:22 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/11/21 09:27:51 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:08:41 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ static int	check_input(int argc, char **argv)
 		i++;
 	}
 	if (ft_atoi(argv[1]) == 0 || (argv[5] && ft_atoi(argv[5]) == 0))
-		return (0);
+		return (1);
 	return (0);
 }
