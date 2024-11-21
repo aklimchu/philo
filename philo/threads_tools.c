@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 12:22:19 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/11/20 15:34:31 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/21 09:21:08 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ int	create_threads(t_philo *philo)
 	philo->start_time = (uint64_t)tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	philo->tid = (pthread_t *)malloc(philo->philo_num * sizeof(pthread_t));
 	if (philo->tid == NULL)
-		return (free_and_exit(philo, 1, "malloc() failed"));
+		return (free_all(philo, "malloc() failed"));
 	while (philo->threads_count < philo->philo_num)
 	{
 		if (pthread_create(&(philo->tid[philo->threads_count]), \
 			NULL, &philo_funct, philo))
-			return (free_and_exit(philo, 1, "pthread_create() failed"));
+			return (free_all(philo, "pthread_create() failed"));
 		philo->threads_count++;
 	}
 	while (check_flags(philo) == 0)
@@ -70,10 +70,10 @@ static void	die_print(t_philo *philo, int i)
 	struct timeval	tv;
 	uint64_t		time;
 
+	pthread_mutex_lock(&philo->printf_mutex);
 	pthread_mutex_lock(&philo->die_mutex);
 	philo->die_flag = 1;
 	pthread_mutex_unlock(&philo->die_mutex);
-	pthread_mutex_lock(&philo->printf_mutex);
 	gettimeofday(&tv, NULL);
 	time = (uint64_t)tv.tv_sec * 1000 + tv.tv_usec / 1000 - philo->start_time;
 	if (philo->die_message_printed == 0)
@@ -104,8 +104,10 @@ void	ft_usleep(uint64_t time_to_sleep)
 
 static void	eat_enough_print(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->printf_mutex);
 	pthread_mutex_lock(&philo->eat_all_mutex);
 	philo->eat_enough_flag = 1;
 	pthread_mutex_unlock(&philo->eat_all_mutex);
+	pthread_mutex_unlock(&philo->printf_mutex);
 	return ;
 }

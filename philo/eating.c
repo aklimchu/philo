@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 10:20:00 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/11/20 15:37:58 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/21 09:47:30 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ static void	add_delay(t_philo *philo, t_cur cur)
 {
 	struct timeval	tv;
 	uint64_t		timestamp;
+	uint64_t		delay_time;
 
 	gettimeofday(&tv, NULL);
 	timestamp = (uint64_t)tv.tv_sec * 1000 + tv.tv_usec / 1000 - \
@@ -118,6 +119,14 @@ static void	add_delay(t_philo *philo, t_cur cur)
 		return ;
 	if (timestamp - philo->last_meal[cur.philo_seat - 1] \
 		< philo->time_to_die / 2)
-		ft_usleep(philo->time_to_die / 2 - \
-			(timestamp - philo->last_meal[cur.philo_seat - 1]));
+	{
+		delay_time = 0;
+		while (check_flags(philo) == 0 && \
+			delay_time < philo->time_to_die / 2 - \
+			(timestamp - philo->last_meal[cur.philo_seat - 1]))
+		{
+			ft_usleep(5);
+			delay_time += 5;
+		}
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 13:42:32 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/11/20 15:34:56 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/21 09:21:02 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,21 @@ int	init_mutex(t_philo *philo)
 	philo->fork_mutex = (pthread_mutex_t *)malloc(philo->philo_num * \
 		sizeof(pthread_mutex_t));
 	if (philo->fork_mutex == NULL)
-		return (free_and_exit(philo, 1, "malloc() failed"));
+		return (free_all(philo, "malloc() failed"));
 	i = 0;
 	while (i < philo->philo_num)
 	{
 		if (pthread_mutex_init(&philo->fork_mutex[i], NULL))
-			return (free_and_exit(philo, 1, "mutex_init() failed"));
+			return (free_all(philo, "mutex_init() failed"));
 		i++;
 		philo->mutex_count++;
 	}
 	philo->last_meal_mutex = (pthread_mutex_t *)malloc(philo->philo_num * \
 		sizeof(pthread_mutex_t));
 	if (philo->last_meal_mutex == NULL)
-		return (free_and_exit(philo, 1, "malloc() failed"));
+		return (free_all(philo, "malloc() failed"));
 	if (init_mutex_extra(philo) == 1)
-		return (free_and_exit(philo, 1, "mutex_init() failed"));
+		return (free_all(philo, "mutex_init() failed"));
 	return (0);
 }
 
@@ -49,24 +49,24 @@ static int	init_mutex_extra(t_philo *philo)
 	while (i < philo->philo_num)
 	{
 		if (pthread_mutex_init(&philo->last_meal_mutex[i], NULL))
-			return (free_and_exit(philo, 1, "mutex_init() failed"));
+			return (free_all(philo, "mutex_init() failed"));
 		i++;
 		philo->mutex_count++;
 	}
 	philo->eaten_times_mutex = (pthread_mutex_t *)malloc(philo->philo_num * \
 		sizeof(pthread_mutex_t));
 	if (philo->eaten_times_mutex == NULL)
-		return (free_and_exit(philo, 1, "malloc() failed"));
+		return (free_all(philo, "malloc() failed"));
 	i = 0;
 	while (i < philo->philo_num)
 	{
 		if (pthread_mutex_init(&philo->eaten_times_mutex[i], NULL))
-			return (free_and_exit(philo, 1, "mutex_init() failed"));
+			return (free_all(philo, "mutex_init() failed"));
 		i++;
 		philo->mutex_count++;
 	}
 	if (init_mutex_extra_2(philo) == 1)
-		return (free_and_exit(philo, 1, "mutex_init() failed"));
+		return (free_all(philo, "mutex_init() failed"));
 	return (0);
 }
 

@@ -6,17 +6,16 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 08:37:44 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/10/28 09:14:35 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/21 09:20:20 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static void	free_memory(t_philo *philo);
-
 static void	free_memory_extra(t_philo *philo);
 
-int	free_and_exit(t_philo *philo, int exit_code, char *error_message)
+int	free_all(t_philo *philo, char *error_message)
 {
 	join_threads(philo);
 	destroy_mutex(philo);
@@ -24,7 +23,7 @@ int	free_and_exit(t_philo *philo, int exit_code, char *error_message)
 	free_memory_extra(philo);
 	if (error_message)
 		printf("%s\n", error_message);
-	exit(exit_code);
+	return (1);
 }
 
 static void	free_memory(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: aklimchu <aklimchu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:44:48 by aklimchu          #+#    #+#             */
-/*   Updated: 2024/11/20 13:53:21 by aklimchu         ###   ########.fr       */
+/*   Updated: 2024/11/21 09:33:29 by aklimchu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@
 # include <stdio.h> // printf
 # include <pthread.h> // threads and mutexes
 # include <sys/time.h> // gettimeofday
-# include <stdlib.h> // exit
+# include <stdlib.h> // malloc
 # include <string.h> // memset
 # include <unistd.h> // usleep
 # include <stdint.h> // uint64_t
-# include <limits.h> // for overflow check
 
 typedef struct s_philo
 {
@@ -55,7 +54,7 @@ typedef struct s_cur
 	int			fork_2;
 }				t_cur;
 
-void		input_error_print(void);
+char		*input_error_print(void);
 int			fill_struct(int argc, char **argv, t_philo *philo);
 int			ft_atoi(const char *str);
 int			create_threads(t_philo *philo);
@@ -65,7 +64,7 @@ int			init_mutex(t_philo *philo);
 void		destroy_mutex(t_philo *philo);
 int			eating(t_philo *philo, t_cur cur);
 void		check_philo(t_philo *philo);
-int			free_and_exit(t_philo *philo, int exit_code, char *error_message);
+int			free_all(t_philo *philo, char *error_message);
 void		ft_usleep(uint64_t time_to_sleep);
 int			check_flags(t_philo *philo);
 uint64_t	check_last_meal(t_philo *philo, int count);
