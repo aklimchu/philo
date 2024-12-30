@@ -1,22 +1,19 @@
-# Philosophers
+# Philosophers  
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://opensource.org/licenses/GPL-3.0)
-Solving famous "Dining philosophers problem"  One or more philosophers sit at a round table.
-There is a large bowl of spaghetti in the middle of the table.
-• The philosophers alternatively eat, think, or sleep.
-While they are eating, they are not thinking nor sleeping;
-while thinking, they are not eating nor sleeping;
-and, of course, while sleeping, they are not eating nor thinking.
-• There are also forks on the table. There are as many forks as philosophers.
-• Because serving and eating spaghetti with only one fork is very inconvenient, a
-philosopher takes their right and their left forks to eat, one in each hand.
-• When a philosopher has finished eating, they put their forks back on the table and
-start sleeping. Once awake, they start thinking again. The simulation stops when
-a philosopher dies of starvation.
+
+This project solves the famous "Dining Philosophers Problem," which is a classic synchronization problem in computer science. The simulation models philosophers sitting at a round table, where they alternately eat, think, and sleep.
+
+### Problem Overview:
+- Philosophers sit at a table with a large bowl of spaghetti in the center.
+- There are forks placed between each philosopher; each philosopher needs two forks to eat.
+- Philosophers alternate between eating, thinking, and sleeping.
+- A philosopher eats using both the fork on their right and the fork on their left.
+- Philosophers die of starvation if they don’t eat within a specified time frame.
 
 ## ✨ Features
-- Uses a thread for each philosopher
-- Creates multiple mutexes to ensure that there are no data races
-- A message announcing a philosopher died is be displayed no more than 10 ms after the actual death of the philosopher.
+- **Thread-based Simulation**: Each philosopher is represented by a separate thread.
+- **Mutexes**: Multiple mutexes are used to prevent data races and ensure synchronization.
+- **Philosopher Death**: If a philosopher dies, a message is displayed within 10ms after their death.
 
 ## 📚 Table of Contents
 - [Installation](#-installation)
@@ -25,14 +22,15 @@ a philosopher dies of starvation.
 - [Cleaning Up](#-cleaning-up)
 - [License](#license)
 
-## 🚀 Installation!
+## 🚀 Installation
 
 Clone the repository and navigate to the project directory:
+
 ```bash
 git clone https://github.com/aklimchu/philo.git
 cd philo/philo
 ```
-## 🛠️ Build the Program!
+## 🛠️ Build the Program
 
 ### Use `make` command to create the program:
 ```bash
@@ -41,26 +39,17 @@ make
 
 ## 🎮 Running the Program
 
-* #### Philosophers:
+To run the simulation, execute the following command:
 ```bash
 ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep
 [number_of_times_each_philosopher_must_eat]
 ```
-*number_of_philosophers:* The number of philosophers and also the number of forks.
-
-*time_to_die (in milliseconds):* If a philosopher didn’t start eating time_to_die
-milliseconds since the beginning of their last meal or the beginning of the sim-
-ulation, they die.
-
-*time_to_eat (in milliseconds):* The time it takes for a philosopher to eat.
-During that time, they will need to hold two forks.
-
-*time_to_sleep (in milliseconds):* The time a philosopher will spend sleeping.
-
-*number_of_times_each_philosopher_must_eat (optional argument):* If all
-philosophers have eaten at least number_of_times_each_philosopher_must_eat
-times, the simulation stops. If not specified, the simulation stops when a
-philosopher dies.
+### Arguments:
+- **`number_of_philosophers`**: The number of philosophers (and forks) at the table.
+- **`time_to_die`** (in milliseconds): The time after which a philosopher dies if they haven’t eaten.
+- **`time_to_eat`** (in milliseconds): The time it takes for a philosopher to eat.
+- **`time_to_sleep`** (in milliseconds): The time a philosopher will sleep between meals.
+- **`number_of_times_each_philosopher_must_eat`** (optional): The number of times each philosopher must eat before the simulation stops. If not specified, the simulation stops when a philosopher dies.
 
 ## 🧹 Cleaning Up
 
