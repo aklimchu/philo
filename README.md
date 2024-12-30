@@ -1,4 +1,4 @@
-# philo
+# Philosophers
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://opensource.org/licenses/GPL-3.0)
 Solving famous "Dining philosophers problem"  One or more philosophers sit at a round table.
 There is a large bowl of spaghetti in the middle of the table.
