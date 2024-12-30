@@ -14,9 +14,11 @@
 
 static int	lock_first_fork(t_philo *philo, t_cur cur);
 static int	lock_second_fork_and_eat(t_philo *philo, t_cur cur);
-static int	lock_second_fork_and_eat_extra(t_philo *philo, t_cur cur);
+static int	print_message_and_eat(t_philo *philo, t_cur cur);
 static void	add_delay(t_philo *philo, t_cur cur);
 
+// philosopher eating until his eating time has finished or
+// until check_flags function has returned false
 int	eating(t_philo *philo, t_cur cur)
 {
 	add_delay(philo, cur);
@@ -32,6 +34,7 @@ int	eating(t_philo *philo, t_cur cur)
 	return (0);
 }
 
+// locking the first fork and printing a corresponding message
 static int	lock_first_fork(t_philo *philo, t_cur cur)
 {
 	uint64_t		timestamp;
@@ -55,6 +58,7 @@ static int	lock_first_fork(t_philo *philo, t_cur cur)
 	return (0);
 }
 
+// locking the second fork and updating the time of last meal
 static int	lock_second_fork_and_eat(t_philo *philo, t_cur cur)
 {
 	uint64_t		timestamp;
@@ -74,10 +78,11 @@ static int	lock_second_fork_and_eat(t_philo *philo, t_cur cur)
 	philo->last_meal[cur.philo_seat - 1] = timestamp;
 	pthread_mutex_unlock(&philo->last_meal_mutex[cur.philo_seat - 1]);
 	pthread_mutex_lock(&philo->printf_mutex);
-	return (lock_second_fork_and_eat_extra(philo, cur));
+	return (print_message_and_eat(philo, cur));
 }
 
-static int	lock_second_fork_and_eat_extra(t_philo *philo, t_cur cur)
+// printing a message about locking the second fork and starting the meal
+static int	print_message_and_eat(t_philo *philo, t_cur cur)
 {
 	uint64_t		time;
 	struct timeval	tv;
@@ -106,6 +111,8 @@ static int	lock_second_fork_and_eat_extra(t_philo *philo, t_cur cur)
 	return (0);
 }
 
+// adding a delay if philosopher is ready to eat again too soon
+// after the previous meal
 static void	add_delay(t_philo *philo, t_cur cur)
 {
 	struct timeval	tv;

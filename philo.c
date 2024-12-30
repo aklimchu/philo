@@ -17,6 +17,7 @@ static int	sleeping(t_philo *philo, t_cur cur);
 static int	thinking(t_philo *philo, t_cur cur);
 static void	philo_processes(t_philo *philo, t_cur cur);
 
+// the function will is called by every philosoher's thread
 void	*philo_funct(void *data)
 {
 	t_philo		*philo;
@@ -41,6 +42,7 @@ void	*philo_funct(void *data)
 	return (NULL);
 }
 
+// setting local values for philosopher's thread
 static void	set_values(t_philo *philo, t_cur *cur)
 {
 	pthread_mutex_lock(&philo->philo_count_mutex);
@@ -54,6 +56,7 @@ static void	set_values(t_philo *philo, t_cur *cur)
 	cur->fork_2 = cur->philo_seat;
 }
 
+// philosopher thinking (when not eating or sleeping)
 static int	thinking(t_philo *philo, t_cur cur)
 {
 	uint64_t		timestamp;
@@ -69,6 +72,8 @@ static int	thinking(t_philo *philo, t_cur cur)
 	return (0);
 }
 
+// philosopher's routine, loop will continue
+// until check_flags function has returned false
 static void	philo_processes(t_philo *philo, t_cur cur)
 {
 	while (check_flags(philo) == 0)
@@ -82,6 +87,8 @@ static void	philo_processes(t_philo *philo, t_cur cur)
 	}
 }
 
+// philosopher sleeping until his sleeping time has finished or
+// until check_flags function has returned false
 static int	sleeping(t_philo *philo, t_cur cur)
 {
 	uint64_t		time;

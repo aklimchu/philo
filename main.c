@@ -30,6 +30,7 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
+// checking the number of arguments and if values are numerical / not negative 
 static int	check_input(int argc, char **argv)
 {
 	int		i;

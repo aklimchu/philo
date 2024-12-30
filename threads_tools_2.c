@@ -12,6 +12,9 @@
 
 #include "philo.h"
 
+// checking if any of the flags have been set to true
+// (flags related to death of philosopher and
+// to all philosophers having eaten enough)
 int	check_flags(t_philo *philo)
 {
 	int		copy_die;
@@ -31,6 +34,7 @@ int	check_flags(t_philo *philo)
 		return (0);
 }
 
+// getting the timestamp of the last meal certain philosopher has eaten
 uint64_t	check_last_meal(t_philo *philo, int count)
 {
 	uint64_t	res;
@@ -41,6 +45,7 @@ uint64_t	check_last_meal(t_philo *philo, int count)
 	return (res);
 }
 
+// getting the number of meals certain philosopher has eaten
 int	check_eaten(t_philo *philo, int count)
 {
 	int		res;

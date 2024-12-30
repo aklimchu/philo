@@ -15,6 +15,7 @@
 static void	die_print(t_philo *philo, int i);
 static void	eat_enough_print(t_philo *philo);
 
+// creating one threads per philosopher
 int	create_threads(t_philo *philo)
 {
 	struct timeval	tv;
@@ -39,6 +40,8 @@ int	create_threads(t_philo *philo)
 	return (0);
 }
 
+// monitoring function which is checking if any philosopher has died of
+// starvation or if everyone has eaten enough
 void	check_philo(t_philo *philo)
 {
 	int				i;
@@ -65,6 +68,7 @@ void	check_philo(t_philo *philo)
 	}
 }
 
+// printing the message about philosopher's death to the terminal
 static void	die_print(t_philo *philo, int i)
 {
 	struct timeval	tv;
@@ -85,6 +89,7 @@ static void	die_print(t_philo *philo, int i)
 	return ;
 }
 
+// function which is "sleeping" for the provided time period
 void	ft_usleep(uint64_t time_to_sleep)
 {
 	uint64_t		time_before;
@@ -102,6 +107,7 @@ void	ft_usleep(uint64_t time_to_sleep)
 	}
 }
 
+// printing the message about all the philosophers having eaten enough times
 static void	eat_enough_print(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->printf_mutex);

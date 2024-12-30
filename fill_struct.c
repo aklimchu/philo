@@ -14,6 +14,8 @@
 
 static const char	*find_white_spaces(const char *str);
 
+// filling the struct that the program will use later,
+// based on the data provided by user
 int	fill_struct(int argc, char **argv, t_philo *philo)
 {
 	memset(philo, 0, sizeof(*philo));
@@ -45,6 +47,7 @@ char	*input_error_print(void)
 	return (NULL);
 }
 
+// converting string to integer
 int	ft_atoi(const char *str)
 {
 	int			res;
@@ -73,6 +76,8 @@ int	ft_atoi(const char *str)
 	return (res * neg);
 }
 
+// skipping white spaces and checking if the string contains
+// any characters that are not numerical (and not "-" or "+")
 static const char	*find_white_spaces(const char *str)
 {
 	int		start;

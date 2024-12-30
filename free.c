@@ -12,21 +12,21 @@
 
 #include "philo.h"
 
-static void	free_memory(t_philo *philo);
-static void	free_memory_extra(t_philo *philo);
+static void	free_mutexes(t_philo *philo);
+static void	free_rest_of_memory(t_philo *philo);
 
 int	free_all(t_philo *philo, char *error_message)
 {
 	join_threads(philo);
 	destroy_mutex(philo);
-	free_memory(philo);
-	free_memory_extra(philo);
+	free_mutexes(philo);
+	free_rest_of_memory(philo);
 	if (error_message)
 		printf("%s\n", error_message);
 	return (1);
 }
 
-static void	free_memory(t_philo *philo)
+static void	free_mutexes(t_philo *philo)
 {
 	if (philo->fork_mutex)
 	{
@@ -50,7 +50,7 @@ static void	free_memory(t_philo *philo)
 	}
 }
 
-static void	free_memory_extra(t_philo *philo)
+static void	free_rest_of_memory(t_philo *philo)
 {
 	if (philo->last_meal)
 	{

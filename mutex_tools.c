@@ -12,10 +12,9 @@
 
 #include "philo.h"
 
-static int	init_mutex_extra(t_philo *philo);
-static int	init_mutex_extra_2(t_philo *philo);
-static void	destroy_mutex_extra(t_philo *philo, int destroy_count);
+static int	init_mutex_more(t_philo *philo);
 
+// initializing mutexes that will be used to protect the program from data races
 int	init_mutex(t_philo *philo)
 {
 	int		i;
@@ -36,12 +35,13 @@ int	init_mutex(t_philo *philo)
 		sizeof(pthread_mutex_t));
 	if (philo->last_meal_mutex == NULL)
 		return (free_all(philo, "malloc() failed"));
-	if (init_mutex_extra(philo) == 1)
+	if (init_mutex_more(philo) == 1)
 		return (free_all(philo, "mutex_init() failed"));
 	return (0);
 }
 
-static int	init_mutex_extra(t_philo *philo)
+// initializing mutexes that will be used to protect the program from data races
+static int	init_mutex_more(t_philo *philo)
 {
 	int		i;
 
@@ -65,13 +65,6 @@ static int	init_mutex_extra(t_philo *philo)
 		i++;
 		philo->mutex_count++;
 	}
-	if (init_mutex_extra_2(philo) == 1)
-		return (free_all(philo, "mutex_init() failed"));
-	return (0);
-}
-
-static int	init_mutex_extra_2(t_philo *philo)
-{
 	if (pthread_mutex_init(&philo->philo_count_mutex, NULL))
 		return (1);
 	philo->mutex_count++;
@@ -87,6 +80,7 @@ static int	init_mutex_extra_2(t_philo *philo)
 	return (0);
 }
 
+// destroying mutexes when exiting the program
 void	destroy_mutex(t_philo *philo)
 {
 	int		i;
@@ -112,13 +106,6 @@ void	destroy_mutex(t_philo *philo)
 		pthread_mutex_destroy(&philo->printf_mutex);
 		destroy_count++;
 	}
-	destroy_mutex_extra(philo, destroy_count);
-}
-
-static void	destroy_mutex_extra(t_philo *philo, int destroy_count)
-{
-	int		i;
-
 	i = 0;
 	while (destroy_count < philo->mutex_count && i < philo->philo_num)
 	{
