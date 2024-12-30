@@ -2,27 +2,24 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://opensource.org/licenses/GPL-3.0)
 Solving famous "Dining philosophers problem" using threads and mutexes
 
-## 📚 Table of Contents
-- [Preview](#preview)
-- [🚀 Installation](#-installation)
-- [🛠️ Build the Program](#%EF%B8%8F-build-the-program)
-- [🎮 Running the Program](#-running-the-program)
-  - [Mandelbrot](#mandelbrot)
-  - [Julia](#julia)
-  - [Pythagoras Tree](#pythagoras-tree)
-- [✨ Controls](#-controls)
-- [🧹 Cleaning Up](#-cleaning-up)
-- [License](#license)
+## ✨ Features
+- Supports standard UNIX pipes for chaining commands
+- Handles multiple pipes
+- Accepts user input through `here_doc`
 
-## Preview
-![Fractol Preview](https://github.com/user-attachments/assets/3a9e852e-a9cf-4558-87b8-51f0909077e1)
+## 📚 Table of Contents
+- [Installation](#-installation)
+- [Building the Program](#️-build-the-program)
+- [Running the Program](#-running-the-program)
+- [Cleaning Up](#-cleaning-up)
+- [License](#license)
 
 ## 🚀 Installation!
 
 Clone the repository and navigate to the project directory:
 ```bash
-git clone https://github.com/aklimchu/fractol.git
-cd fractol
+git clone https://github.com/aklimchu/philo.git
+cd pipex
 ```
 ## 🛠️ Build the Program!
 
@@ -30,31 +27,27 @@ cd fractol
 ```bash
 make
 ```
+
 ## 🎮 Running the Program
 
-* #### Mandelbrot:
+* #### Philosophers:
 ```bash
-./fractol mandelbrot
+./philo number_of_philosophers time_to_die time_to_eat time_to_sleep
+[number_of_times_each_philosopher_must_eat]
 ```
-* #### Julia:
-```bash
-./fractol julia x-value y-value
-```
-*(x and y values should be between -2 and 2)*
+*(the program accepts positive numbers as input values)*
 
-* #### Pythagoras Tree:
-```bash
-./fractol pythagoras
-```
-
-## ✨ Controls
-
-* Mouse Wheel: Zoom in/out
-* Arrow Keys: Move the view
-* Z / X: Change colors for Mandelbrot and Julia fractals
-* Q: Expand the Pythagoras tree
-* R: Change the Pythagoras tree color
-* Esc: Exit the program
+* ##### number_of_philosophers: The number of philosophers and also the number of forks.
+* ##### time_to_die (in milliseconds): If a philosopher didn’t start eating time_to_die
+milliseconds since the beginning of their last meal or the beginning of the sim-
+ulation, they die.
+* ##### time_to_eat (in milliseconds): The time it takes for a philosopher to eat.
+During that time, they will need to hold two forks.
+* ##### time_to_sleep (in milliseconds): The time a philosopher will spend sleeping.
+* ##### number_of_times_each_philosopher_must_eat (optional argument): If all
+philosophers have eaten at least number_of_times_each_philosopher_must_eat
+times, the simulation stops. If not specified, the simulation stops when a
+philosopher dies.
 
 ## 🧹 Cleaning Up
 
