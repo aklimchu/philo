@@ -13,7 +13,7 @@ This project solves the famous "Dining Philosophers Problem," which is a classic
 ## ✨ Features
 - **Thread-based Simulation**: Each philosopher is represented by a separate thread.
 - **Mutexes**: Multiple mutexes are used to prevent data races and ensure synchronization.
-- **Philosopher Death**: If a philosopher dies, a message is displayed within 10ms after their death.
+- **Event logging in ms**: The program tracks time in milliseconds, printing a message for each event with a corresponding timestamp.
 
 ## 📚 Table of Contents
 - [Installation](#-installation)
